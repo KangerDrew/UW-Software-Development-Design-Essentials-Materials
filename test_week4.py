@@ -1,4 +1,4 @@
-import main
+import week4
 
 def test_merge():
   assert main.merge([5, 10, 15, 20], [3, 7, 13, 60, 100]) == [3, 5, 7, 10, 13, 15, 20, 60, 100]
