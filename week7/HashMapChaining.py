@@ -17,33 +17,33 @@ class HashMapChaining:
         # Initialize a table with length 10:
         self.table_len = table_len
         self.table = [None for i in range(table_len)]
-        
+
         # Keep track of how many nodes (elements) are in the table:
         self.node_count = 0
 
     def getValue(self, key):
         table_index = hash2Index(hashFunc(key), self.table_len)
-        
+
         # Get the "head node" of the linked list at table_index:
         head = self.table[table_index]
         # If there's nothing there, that means the key doesn't exist within the HashMap. Raise KeyError:
         if not head:
             raise KeyError(key)
-        
+
         # Otherwise, we need to check through the linked list:
         while head:
 
             # If we find the match, return its value:
             if head.key == key:
                 return head.value
-            
+
             # Increment pointer to next node:
             head = head.next
 
         # Raise KeyError if the key wasn't found within the linked list:
         raise KeyError(key)
 
-    def setValue(self, key, value) -> None:
+    def setValue(self, key, value):
 
         table_index = hash2Index(hashFunc(key), self.table_len)
         # Get the "head node" of the linked list at table_index:
@@ -58,7 +58,7 @@ class HashMapChaining:
                 self._rehash()
 
             return None
-        
+
         # Otherwise, we need to check through the linked list. This time, we'll need the
         # reference to the previous node also:
         prev = None
@@ -68,7 +68,7 @@ class HashMapChaining:
                 head.value = value
                 # No need to increment node_count.
                 return None
-            
+
             # Increment the prev and head pointers:
             prev = head
             head = head.next
@@ -76,7 +76,7 @@ class HashMapChaining:
         # If the above while loop exited without returning, it means that the key did not
         # exist within the linked list. So create a new one at the end (prev pointer should
         # be at the end of the linked list)
-        
+
         prev.next = HashNodeC(key, value)
         self.node_count += 1
 
@@ -96,11 +96,10 @@ class HashMapChaining:
 
         # Loop through current HashMap's table, and append each node to temp:
         for i in range(self.table_len):
-            
+
             current = self.table[i]
 
             while current:
-
                 # There's a valid HashNode, so append its key and value to temporary storage:
                 temp.append((current.key, current.value))
                 # Increment current pointer:
@@ -109,7 +108,7 @@ class HashMapChaining:
         # At this point, all the key & value pairs from original table should be
         # in the temporary storage. Increase the table size, and add all the items
         # back to the larger HashMap table. Increase by size 10:
-                
+
         self.table_len += 10
         self.table = [None for i in range(self.table_len)]
 
@@ -120,7 +119,6 @@ class HashMapChaining:
 
         # Rehash complete!
         return None
-        
 
 # TODO: Write pytest based on rough check below:
 # newMap = HashMapChaining()
@@ -130,4 +128,3 @@ class HashMapChaining:
 # print(newMap.table)
 # print(newMap.node_count)
 # print(newMap.getValue("A"))
-# print(newMap.getValue("C"))
