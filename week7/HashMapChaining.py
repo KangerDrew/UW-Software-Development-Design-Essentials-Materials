@@ -12,19 +12,17 @@ class HashNodeC:
 
 class HashMapChaining:
 
-    def __init__(self):
+    def __init__(self, table_len=10):
 
         # Initialize a table with length 10:
-        defaultLen = 10
-        self.table = [None for i in range(defaultLen)]
-        self.tableLen = defaultLen
+        self.table_len = table_len
+        self.table = [None for i in range(table_len)]
         
         # Keep track of how many nodes (elements) are in the table:
         self.node_count = 0
 
-
     def getValue(self, key):
-        table_index = hash2Index(hashFunc(key), self.tableLen)
+        table_index = hash2Index(hashFunc(key), self.table_len)
         
         # Get the "head node" of the linked list at table_index:
         head = self.table[table_index]
@@ -45,19 +43,18 @@ class HashMapChaining:
         # Raise KeyError if the key wasn't found within the linked list:
         raise KeyError(key)
 
-
     def setValue(self, key, value) -> None:
 
-        table_index = hash2Index(hashFunc(key), self.tableLen)
+        table_index = hash2Index(hashFunc(key), self.table_len)
         # Get the "head node" of the linked list at table_index:
         head = self.table[table_index]
-         # If there's nothing there, create the new node, and increment node_count by 1:
+        # If there's nothing there, create the new node, and increment node_count by 1:
         if not head:
             self.table[table_index] = HashNodeC(key, value)
             self.node_count += 1
 
-            # New Node has been added. Check if rehash is necessary (i.e. threshhold load factor exceeds 1.5):
-            if self.node_count / self.tableLen > 1.5:
+            # New Node has been added. Check if rehash is necessary (i.e. threshold load factor exceeds 1.5):
+            if self.node_count / self.table_len > 1.5:
                 self._rehash()
 
             return None
@@ -84,21 +81,21 @@ class HashMapChaining:
         self.node_count += 1
 
         # New Node has been added. Check if rehash is necessary:
-        if self.node_count / self.tableLen > 1.5:
+        if self.node_count / self.table_len > 1.5:
             self._rehash()
 
         return None
-            
+
     def _rehash(self):
 
         # Initialize a temporary stack to store all the nodes within current table.
         # In other statically typed language (ex. Java, C#, etc.), we need to specify
         # the size of this temporary storage. If such were the case, I'd set the size
-        # to be equal to the tableLen * 1.5. But Python doesn't care lol:
+        # to be equal to the table_len * 1.5. But Python doesn't care lol:
         temp = []
 
         # Loop through current HashMap's table, and append each node to temp:
-        for i in range(self.tableLen):
+        for i in range(self.table_len):
             
             current = self.table[i]
 
@@ -113,8 +110,8 @@ class HashMapChaining:
         # in the temporary storage. Increase the table size, and add all the items
         # back to the larger HashMap table. Increase by size 10:
                 
-        self.tableLen += 10
-        self.table = [None for i in range(self.tableLen)]
+        self.table_len += 10
+        self.table = [None for i in range(self.table_len)]
 
         # Remove all the items 1 by 1 from temp stack, and add them to our newly sized table:
         while temp:
@@ -124,8 +121,6 @@ class HashMapChaining:
         # Rehash complete!
         return None
         
-
-
 
 # TODO: Write pytest based on rough check below:
 # newMap = HashMapChaining()
