@@ -3,7 +3,7 @@
 # covered in class, as switching the placement of the letter will result in
 # different hash value [ex. "ab" => 2269, "ba" => 2330]
 
-# I will be re-using my submission from the first assignemnt as a hash function:
+# I will be re-using my submission from the first assignment as a hash function:
 def hashFunc(input_str):
     base_62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     input_str = input_str[::-1]
