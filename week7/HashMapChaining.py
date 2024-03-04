@@ -1,4 +1,4 @@
-from hashFuncs import hashFunc, hash2Index
+from hashHelpers import hashFunc, hash2Index
 
 
 # The HashNode in this case will be a linked list node:
@@ -107,9 +107,15 @@ class HashMapChaining:
 
         # At this point, all the key & value pairs from original table should be
         # in the temporary storage. Increase the table size, and add all the items
-        # back to the larger HashMap table. Increase by size 10:
+        # back to the larger HashMap table.
 
+        # Begin by resetting the node_count:
+        self.node_count = 0
+
+        # Increase by size 10:
         self.table_len += 10
+
+        # Reset table:
         self.table = [None for i in range(self.table_len)]
 
         # Remove all the items 1 by 1 from temp stack, and add them to our newly sized table:
@@ -119,12 +125,3 @@ class HashMapChaining:
 
         # Rehash complete!
         return None
-
-# TODO: Write pytest based on rough check below:
-# newMap = HashMapChaining()
-# newMap.setValue("0", 13)
-# newMap.setValue("A", 1153)
-
-# print(newMap.table)
-# print(newMap.node_count)
-# print(newMap.getValue("A"))
