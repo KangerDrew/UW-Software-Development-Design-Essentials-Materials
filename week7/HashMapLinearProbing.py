@@ -1,21 +1,20 @@
 from hashFuncs import hashFunc, hash2Index
 
-# Instead of creating an entirely new class for each element of the HashMap (like I did with Chaning method),
+# Instead of creating an entirely new class for each element of the HashMap (like I did with Chaining method),
 # I will just use python's tuple class to store key value pair. Assume first item in tuple is key, and second
 # item is the value.
 
+
 class HashMapLinearProbing:
 
-    def __init__(self):
+    def __init__(self, table_len=10):
 
         # Initialize a table with length 10:
-        defaultLen = 10
-        self.table = [None for i in range(defaultLen)]
-        self.tableLen = defaultLen
-        
+        self.table_len = table_len
+        self.table = [None for i in range(table_len)]
+
         # Keep track of how many nodes (elements) are in the table:
         self.node_count = 0
-
     
     def getValue(self, key):
         table_index = hash2Index(hashFunc(key), self.tableLen)
@@ -27,7 +26,7 @@ class HashMapLinearProbing:
         if not ele:
             raise KeyError(key)
         
-        # Otherwise, we need to begin linear probling until we find an element that matches our key.
+        # Otherwise, we need to begin linear probing until we find an element that matches our key.
         # Initialize a variable that represents how far we will travel from the original table_index
         # before finding the matching key.
         delta = 0
@@ -46,7 +45,9 @@ class HashMapLinearProbing:
             # Re-define element:
             ele = self.table[new_index]
         
-        # If the above while loop exited, it means the key does not exist witin the hash map. Raise KeyError:
+        # If the above while loop exited, it means the key does not exist within the hash map. Raise KeyError:
         raise KeyError(key)
 
-            
+
+
+
