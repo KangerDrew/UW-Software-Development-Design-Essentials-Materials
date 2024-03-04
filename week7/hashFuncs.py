@@ -5,7 +5,6 @@
 
 # I will be re-using my submission from the first assignemnt as a hash function:
 def hashFunc(input_str):
-
     base_62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     input_str = input_str[::-1]
     total = 0
@@ -18,14 +17,13 @@ def hashFunc(input_str):
         # raise error, letting them know to use base62 value:
         if b_62_val == -1:
             raise IndexError("Please use valid base62 value for your key!")
-        
+
         total += (62 ** i) * b_62_val
 
     return total
 
+
 # Provide the hash value, and the size of the array to get its index:
-def hash2Index(hashValue, size):
-    return hashValue % size
+def hash2Index(hash_value, size):
+    return hash_value % size
 
-
-print(5/3)
