@@ -109,14 +109,14 @@ class HashMapChaining:
         # in the temporary storage. Increase the table size, and add all the items
         # back to the larger HashMap table.
 
-        # Begin by resetting the node_count:
-        self.node_count = 0
-
         # Increase by size 10:
         self.table_len += 10
 
         # Reset table:
         self.table = [None for i in range(self.table_len)]
+
+        # Table is now empty. Reset the node_count:
+        self.node_count = 0
 
         # Remove all the items 1 by 1 from temp stack, and add them to our newly sized table:
         while temp:
