@@ -1,27 +1,27 @@
-import HashMapChaining
+from HashMapChaining import HashMapChaining
 import pytest
 
 
-def test_set_value():
+def test_hmc_set_value():
 
-    test_hash = HashMapChaining.HashMapChaining()
+    test_hash = HashMapChaining()
     test_hash.setValue("0", 23)
 
     assert test_hash.table[0].value == 23
 
 
-def test_set_value_chaining():
+def test_hmc_set_value_chaining():
 
-    test_hash = HashMapChaining.HashMapChaining()
+    test_hash = HashMapChaining()
     test_hash.setValue("0", 23)
     test_hash.setValue("A", 64)
 
     assert test_hash.table[0].next.value == 64
 
 
-def test_set_value_override():
+def test_hmc_set_value_override():
 
-    test_hash = HashMapChaining.HashMapChaining()
+    test_hash = HashMapChaining()
     test_hash.setValue("0", 23)
     test_hash.setValue("0", 32)
 
@@ -29,26 +29,26 @@ def test_set_value_override():
     assert test_hash.node_count == 1
 
 
-def test_get_value():
+def test_hmc_get_value():
 
-    test_hash = HashMapChaining.HashMapChaining()
+    test_hash = HashMapChaining()
     test_hash.setValue("0", 23)
 
     assert test_hash.getValue("0") == 23
 
 
-def test_get_value_chaining():
+def test_hmc_get_value_chaining():
 
-    test_hash = HashMapChaining.HashMapChaining()
+    test_hash = HashMapChaining()
     test_hash.setValue("0", 23)
     test_hash.setValue("A", 64)
 
     assert test_hash.getValue("A") == 64
 
 
-def test_get_value_error():
+def test_hmc_get_value_error():
 
-    test_hash = HashMapChaining.HashMapChaining()
+    test_hash = HashMapChaining()
     test_hash.setValue("0", 23)
 
     with pytest.raises(KeyError) as err1:
@@ -64,9 +64,9 @@ def test_get_value_error():
     assert err2.value.args[0] == "A"
 
 
-def test_rehash():
+def test_hmc_rehash():
 
-    test_hash = HashMapChaining.HashMapChaining()
+    test_hash = HashMapChaining()
     test_hash.setValue("0", 0)
     test_hash.setValue("1", 1)
     test_hash.setValue("2", 2)
@@ -88,4 +88,3 @@ def test_rehash():
     test_hash.setValue("F", 15)
 
     assert test_hash.table_len == 20
-
