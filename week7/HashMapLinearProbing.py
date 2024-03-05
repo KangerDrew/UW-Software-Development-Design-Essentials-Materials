@@ -1,4 +1,4 @@
-from hashFuncs import hashFunc, hash2Index
+from hashHelpers import hashFunc, hash2Index
 
 
 # Instead of creating an entirely new class for each element of the HashMap (like I did with Chaining method),
@@ -49,3 +49,58 @@ class HashMapLinearProbing:
         # If the above while loop exited, it means the key does not exist within the hash map. Raise KeyError:
         raise KeyError(key)
 
+    def setValue(self, key, value):
+
+        table_index = hash2Index(hashFunc(key), self.table_len)
+        # Get the element at table_index:
+        ele = self.table[table_index]
+
+        # Initialize a variable to keep track of where you are in the hash table:
+        delta = 0
+
+        while delta < self.table_len:
+
+            # If current index is unoccupied (i.e. null element at current index), add the
+            # input key and value here, and increment node_count. Rehash if threshold load
+            # factor exceeds 0.75:
+            if not ele:
+                self.table[table_index] = (key, value)
+                self.node_count += 1
+
+                if self.node_count / self.table_len > 0.75:
+                    self._rehash()
+
+            # Otherwise, increment delta and seek out the next index to check.
+            delta += 1
+            new_index = (table_index + delta) % self.table_len
+            # Re-define element:
+            ele = self.table[new_index]
+
+        # If the above while loop exits somehow (rehash function should trigger before that happens)
+        # raise IndexError notifying the user that table is full
+        raise IndexError("Hash table is completely full!")
+
+    def _rehash(self):
+
+        # Initialize a temporary stack to store all the nodes within current table.
+        temp = []
+
+        # Loop through current HashMap's table, and append each tuple to temp:
+        for i in range(self.table_len):
+
+            # If there is a valid tuple, append to temporary stack:
+            if self.table[i]:
+                temp.append(self.table[i])
+
+        # Increase the table size, and add all the items back to the larger HashMap table.
+        # Increase by size 10:
+        self.table_len += 10
+        self.table = [None for i in range(self.table_len)]
+
+        # Remove all the items 1 by 1 from temp stack, and add them to our newly sized table:
+        while temp:
+            current_key, current_val = temp.pop()
+            self.setValue(current_key, current_val)
+
+        # Rehash complete!
+        return None
