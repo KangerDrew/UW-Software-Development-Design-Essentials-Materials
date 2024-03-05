@@ -35,7 +35,7 @@ class HashMapLinearProbing:
         while delta < self.table_len:
 
             # If we found the matching key, return its value:
-            if ele[0] == key:
+            if ele and ele[0] == key:
                 return ele[1]
 
             # Otherwise, we increment delta and seek out the next index to check.
@@ -70,11 +70,20 @@ class HashMapLinearProbing:
                 if self.node_count / self.table_len > 0.75:
                     self._rehash()
 
+                # Exit out of the function:
+                return None
+
+            # If a key/value tuple already exists in current index, check if that tuple has the same key
+            # as the input. Update the value if this is the case:
+            if ele[0] == key:
+                self.table[table_index] = (key, value)
+                return None
+
             # Otherwise, increment delta and seek out the next index to check.
             delta += 1
-            new_index = (table_index + delta) % self.table_len
+            table_index = (table_index + delta) % self.table_len
             # Re-define element:
-            ele = self.table[new_index]
+            ele = self.table[table_index]
 
         # If the above while loop exits somehow (rehash function should trigger before that happens)
         # raise IndexError notifying the user that table is full
@@ -97,6 +106,8 @@ class HashMapLinearProbing:
         self.table_len += 10
         self.table = [None for i in range(self.table_len)]
 
+        # Reset node_count:
+        self.node_count = 0
         # Remove all the items 1 by 1 from temp stack, and add them to our newly sized table:
         while temp:
             current_key, current_val = temp.pop()
