@@ -96,6 +96,13 @@ class MinHeap:
             raise IndexError("Heap does not contain any elements!")
 
         root = self.heap[0]
+
+        # If heap only contains 1 element, reset heap to empty list and return root:
+        if len(self.heap) == 1:
+            self.heap = []
+            return root
+
+        # Otherwise, pop the leaf node and replace it as the first element:
         self.heap[0] = self.heap.pop()
         self._heapifyDown()
         return root
@@ -147,4 +154,3 @@ class MinHeap:
             index = smallerChildIndex
 
         return None
-
