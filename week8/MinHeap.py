@@ -1,41 +1,53 @@
 class MinHeap:
     """
-    This Binary Minimum Heap function will use an array to represent itself.    
+    This Binary Minimum Heap function will use an array to represent itself.
 
-    Instead of implementing a binary tree class, we devise an indexing system in an array 
+    Instead of implementing a binary tree class, we devise an indexing system in an array
     where we can identify the parent/child based on the index of the elements. Watch video
     to get visual explanation:
 
     https://www.youtube.com/watch?v=t0Cq6tVNRBA
     """
 
-    def __init__(self):
+    def __init__(self, input_list):
         # Typically, we'll have to specify the length of the array, and increase capacity
         # as needed. We won't be doing that since python list can dynamically change size.
         self.heap = []
 
+        for item in input_list:
+            self.add(item)
+
     # Helpers for getting selected element's parent/child index:
-    def _getLeftChildIndex(self, parentIndex):
+    @staticmethod
+    def _getLeftChildIndex(parentIndex):
         return 2 * parentIndex + 1
-    def _getRightChildIndex(self, parentIndex):
+
+    @staticmethod
+    def _getRightChildIndex(parentIndex):
         return 2 * parentIndex + 2
-    def _getParentIndex(self, childIndex):
+
+    @staticmethod
+    def _getParentIndex(childIndex):
         return (childIndex - 1) // 2
 
     # Helpers to determine whether we are reaching out of bounds
     # (does our current index/node have a parent/child?):
     def _hasLeftChild(self, index):
         return self._getLeftChildIndex(index) < len(self.heap)
+
     def _hasRightChild(self, index):
         return self._getRightChildIndex(index) < len(self.heap)
+
     def _hasParent(self, index):
         return self._getParentIndex(index) >= 0
 
     # Helpers to get the actual value of parent/child:
     def _leftChild(self, index):
         return self.heap[self._getLeftChildIndex(index)]
+
     def _rightChild(self, index):
         return self.heap[self._getRightChildIndex(index)]
+
     def _parent(self, index):
         return self.heap[self._getParentIndex(index)]
 
@@ -45,7 +57,7 @@ class MinHeap:
         """
         self.heap[firstIndex], self.heap[secondIndex] = self.heap[secondIndex], self.heap[firstIndex]
         return None
-    
+
     def peek(self):
         """
         Returns the first (root) element value.
@@ -62,7 +74,7 @@ class MinHeap:
         """
         if not self.heap:
             raise IndexError("Heap does not contain any elements!")
-        
+
         root = self.heap[0]
         self.heap[0] = self.heap.pop()
         self._heapifyDown()
@@ -75,7 +87,6 @@ class MinHeap:
         """
         self.heap.append(item)
         self._heapifyUp()
-        
 
     def _heapifyUp(self):
         """
@@ -102,7 +113,6 @@ class MinHeap:
             smallerChildIndex = self._getLeftChildIndex(index)
             if self._hasRightChild(index) and self._rightChild(index) < self._leftChild(index):
                 smallerChildIndex = self._getRightChildIndex(index)
-            
 
             # Check if MinHeap order is maintained. If yes, break out of while loop
             if self.heap[index] < self.heap[smallerChildIndex]:
